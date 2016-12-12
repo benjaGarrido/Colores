@@ -76,7 +76,7 @@ class ViewController: UIViewController {
             // Distancia del centro a donde hemos tocado
             let dist = calculateDistanceFromCenter(delta)
             if touchIsInKnobWithDistance(distance: dist) {
-                startTransform = imgKnob.startTransform
+                startTransform = imgKnob.transform
                 let center = CGPoint(x: imgKnob.bounds.size.width/2, y: imgKnob.bounds.size.height/2)
                 let deltaX = delta.x - center.x
                 let deltaY = delta.y - center.y
