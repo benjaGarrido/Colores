@@ -38,22 +38,22 @@ class ViewController: UIViewController {
             imgKnob.isHidden = false
             imgKnobBase.isHidden = false
         } else {
-            view.backgroundColor = UIColor(hue:0.5,saturation:0,brightness:0.2,alpha:1.0)
+            view.backgroundColor = UIColor(hue: 0.5,saturation: 0,brightness: 0.2,alpha: 1.0)
             imgKnob.isHidden = true
             imgKnobBase.isHidden = true
         }
     }
     
     func resetKnob() {
-        view.backgroundColor = UIColor(hue:0.5,saturation:0.5,brightness:0.75,alpha:1.0)
+        view.backgroundColor = UIColor(hue: 0.5,saturation: 0.5,brightness: 0.75,alpha: 1.0)
         // Le indicamos que vuelva a su lugar de origen
         imgKnob.transform = CGAffineTransform.identity
         setPointAngle = M_PI_2
     }
     
-    private func touchIsInKnobWithDistance(distance: CGFloat)->Bool {
+    private func touchIsInKnobWithDistance(distance: CGFloat) ->Bool {
         // Calculamos el radio
-        if distance > (imgKnob.bounds.height/2) {
+        if distance > (imgKnob.bounds.height / 2.0) {
             return false
         }
         return true
@@ -77,7 +77,7 @@ class ViewController: UIViewController {
             let dist = calculateDistanceFromCenter(delta)
             if touchIsInKnobWithDistance(distance: dist) {
                 startTransform = imgKnob.transform
-                let center = CGPoint(x: imgKnob.bounds.size.width/2, y: imgKnob.bounds.size.height/2)
+                let center = CGPoint(x: imgKnob.bounds.size.width / 2.0, y: imgKnob.bounds.size.height / 2.0)
                 let deltaX = delta.x - center.x
                 let deltaY = delta.y - center.y
                 // Calculamos el arcotangente
@@ -101,7 +101,10 @@ class ViewController: UIViewController {
     
     // Controlamos el movimiento del dedo (mientras lo arrastramos)
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let touch = touches.first, let deltaAngle = deltaAngle, let startTransform = startTransform, touch.view == #imageLiteral(resourceName: "img_knob") {
+        if let touch = touches.first,
+            let deltaAngle = deltaAngle,
+            let startTransform = startTransform,
+            touch.view == imgKnob {
             // Cogemos la posición en el knob de nuestro dedo
             let position = touch.location(in: imgKnob)
             // Calculamos la distancia desde el centro a donde tenemos el dedo
@@ -109,7 +112,7 @@ class ViewController: UIViewController {
             // Comprobamos si estamos dentro del knob o fuera
             if touchIsInKnobWithDistance(distance: dist) {
                 // Calculamos el ángulo según arrastramos
-                let center = CGPoint(x: imgKnob.bounds.size.width/2, y: imgKnob.bounds.size.height/2)
+                let center = CGPoint(x: imgKnob.bounds.size.width / 2.0, y: imgKnob.bounds.size.height / 2.0)
                 let deltaX = position.x - center.x
                 let deltaY = position.y - center.y
                 let angle = atan2(deltaY, deltaX)
@@ -139,17 +142,17 @@ class ViewController: UIViewController {
         super.touchesMoved(touches, with: event)
     }
     
-    private func colorValueFromAngle(angle: Double)-> CGFloat {
-        let hueValue = (angle - minAngle) * (360 / maxAngle - minAngle)
+    private func colorValueFromAngle(angle: Double) -> CGFloat {
+        let hueValue = (angle - minAngle) * (360 / (maxAngle - minAngle))
         return CGFloat(hueValue / 360)
     }
     
     // Esto es el teorema de pitágoras
-    private func calculateDistanceFromCenter(_ point: CGPoint)-> CGFloat {
-        let center = CGPoint(x: imgKnob.bounds.size.width/2, y: imgKnob.bounds.size.height/2)
+    private func calculateDistanceFromCenter(_ point: CGPoint) -> CGFloat {
+        let center = CGPoint(x: imgKnob.bounds.size.width / 2.0, y: imgKnob.bounds.size.height / 2.0)
         let dx = point.x - center.x
         let dy = point.y - center.y
-        return sqrt((dx * dy) + (dx * dy))
+        return sqrt((dx * dx) + (dy * dy))
     }
 }
 
